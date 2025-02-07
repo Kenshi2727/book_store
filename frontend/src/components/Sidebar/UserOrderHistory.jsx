@@ -14,7 +14,7 @@ export default function Component() {
   useEffect(() => {
     const fetchOrder = async () => {
       const resp = await axios.get(
-        "https://thereadingroom.onrender.com/api/order/get-order-history",
+        process.env.BASE_URL + "/api/order/get-order-history",
         { headers }
       )
       console.log(resp.data)
@@ -25,7 +25,7 @@ export default function Component() {
 
   return (
     <>
-      {!OrderHistory && (<div className='w-full h-screen flex items-center justify-center'><Loader/></div>)}
+      {!OrderHistory && (<div className='w-full h-screen flex items-center justify-center'><Loader /></div>)}
       {OrderHistory && OrderHistory.length > 0 && (
         <div className="h-full p-4 md:p-10 text-zinc-100">
           <h1 className="text-2xl md:text-3xl lg:text-5xl font-semibold text-zinc-500 mb-4 md:mb-8">

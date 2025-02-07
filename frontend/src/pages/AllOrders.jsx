@@ -1,29 +1,29 @@
-import React, {useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Loader} from '../components/Loader/Loader';
+import { Loader } from '../components/Loader/Loader';
 import { FaUserTie } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { FaCheck } from "react-icons/fa";
 import { IoOpenOutline } from "react-icons/io5";
-import  SeeUserData  from './SeeUserData';
+import SeeUserData from './SeeUserData';
 
 export const AllOrders = () => {
   const [AllOrders, setAllOrders] = useState();
   const [Options, setOptions] = useState(-1);
-  const [Values, setValues] = useState({status : "" });
+  const [Values, setValues] = useState({ status: "" });
   const [userDiv, setuserDiv] = useState("hidden");
   const [userDivData, setuserDivData] = useState()
- 
+
   const headers = {
     id: localStorage.getItem('id'),
     authorization: `Bearer ${localStorage.getItem('token')}`,
   };
 
- 
-  
+
+
   useEffect(() => {
-    const fetch = async() => {
-      const resp = await axios.get('https://thereadingroom.onrender.com/api/order/get-all-orders', {headers});
+    const fetch = async () => {
+      const resp = await axios.get(process.env.BASE_URL + '/api/order/get-all-orders', { headers });
       setAllOrders(resp.data.data);
       console.log(resp.data.data);
     }
@@ -31,38 +31,38 @@ export const AllOrders = () => {
   }, [AllOrders]);
 
   const change = (e) => {
-    const {value} = e.target;
+    const { value } = e.target;
     console.log(value)
-    setValues({status : value});
+    setValues({ status: value });
   }
 
-  const submitChanges = async(i) => {
-   
-   const id = AllOrders[i]._id;
-   console.log('Order ID:', id);
-   console.log('Values being sent:', Values);
-   const resp = await axios.put(`https://thereadingroom.onrender.com/api/order/update-status/${id}`, Values,{headers});
-   alert(resp.data.message);
+  const submitChanges = async (i) => {
+
+    const id = AllOrders[i]._id;
+    console.log('Order ID:', id);
+    console.log('Values being sent:', Values);
+    const resp = await axios.put(process.env.BASE_URL + `/api/order/update-status/${id}`, Values, { headers });
+    alert(resp.data.message);
   }
 
-  
 
-  AllOrders && AllOrders.splice(AllOrders.length -1, 1);
-  
+
+  AllOrders && AllOrders.splice(AllOrders.length - 1, 1);
+
   return (
     <>
-      {!AllOrders && 
-        (<div className='w-full h-screen flex items-center justify-center'><Loader/></div>)}
-      {AllOrders && AllOrders.length > 0 && 
+      {!AllOrders &&
+        (<div className='w-full h-screen flex items-center justify-center'><Loader /></div>)}
+      {AllOrders && AllOrders.length > 0 &&
         (
-        <div className="h-[100%] p-10 text-zinc-100">
+          <div className="h-[100%] p-10 text-zinc-100">
             <h1 className="text-3xl md:text-5xl font-semibold text-zinc-500 mb-8">
               All Orders History
             </h1>
-            {AllOrders.map((items,i) => (
+            {AllOrders.map((items, i) => (
               <div
-              key={i}
-              className="bg-zinc-800 w-full rounded py-4 px-6 mb-4 hover:bg-zinc-900 hover:cursor-pointer">
+                key={i}
+                className="bg-zinc-800 w-full rounded py-4 px-6 mb-4 hover:bg-zinc-900 hover:cursor-pointer">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-zinc-400 w-24">Sr.</span>
                   <span className="flex-1">{i + 1}</span>
@@ -92,35 +92,35 @@ export const AllOrders = () => {
                     <button className='hover:scale-105 transition-all duration-300' onClick={() => setOptions(i)}>
                       {items.status === "Order placed" ? (
                         <div className='text-yellow-400'>{items.status}</div>
-                      ): items.status === "Cancelled" ? (<div className='text-red-400'>{items.status}</div>) : (<div className='text-green-400'>{items.status}</div>)}
+                      ) : items.status === "Cancelled" ? (<div className='text-red-400'>{items.status}</div>) : (<div className='text-green-400'>{items.status}</div>)}
                     </button>
-                    
+
                     <div className={`${Options === i ? "flex" : "hidden"} flex mt-2`}>
-                      <select 
-                      name="status" 
-                      id="" 
-                      className="bg-gray-800"
-                      value={Values.status}
-                      onChange={change}
+                      <select
+                        name="status"
+                        id=""
+                        className="bg-gray-800"
+                        value={Values.status}
+                        onChange={change}
                       >
                         {[
                           "Order placed",
                           "Out for delivery",
                           "Delivered",
                           "Cancelled",
-                        ].map((items,i) => (
+                        ].map((items, i) => (
                           <option value={items} key={i}>
                             {items}
                           </option>
                         ))}
                       </select>
-                      <button 
-                      className='text-green-500 hover:text-green-600 ml-2'
-                      onClick={() => {
-                        setOptions(-1);
-                        submitChanges(i);
-                      }}>
-                      <FaCheck />
+                      <button
+                        className='text-green-500 hover:text-green-600 ml-2'
+                        onClick={() => {
+                          setOptions(-1);
+                          submitChanges(i);
+                        }}>
+                        <FaCheck />
                       </button>
                     </div>
                   </div>
@@ -128,12 +128,12 @@ export const AllOrders = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-zinc-400 w-24">User</span>
                   <div className="flex-1">
-                    <button 
-                    className='text-xl hover:text-orange-500'
-                    onClick={() => {
-                      setuserDiv("fixed");
-                      setuserDivData(items.user);
-                    }}>
+                    <button
+                      className='text-xl hover:text-orange-500'
+                      onClick={() => {
+                        setuserDiv("fixed");
+                        setuserDivData(items.user);
+                      }}>
                       <IoOpenOutline />
                     </button>
                   </div>
@@ -142,7 +142,7 @@ export const AllOrders = () => {
             ))}
           </div>
         )}
-        {userDivData && (<SeeUserData userDivData={userDivData} userDiv={userDiv} setuserDiv={setuserDiv}/>)}
+      {userDivData && (<SeeUserData userDivData={userDivData} userDiv={userDiv} setuserDiv={setuserDiv} />)}
     </>
   );
 }

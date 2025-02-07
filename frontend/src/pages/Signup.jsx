@@ -1,34 +1,33 @@
-import React ,{useState} from 'react';
-import {useNavigate} from 'react-router-dom'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
 function Signup() {
-  
-  const [Values, setValues] = useState({username:"",email:"",password:"",address:""});
+
+  const [Values, setValues] = useState({ username: "", email: "", password: "", address: "" });
   const navigate = useNavigate();
-  const change = (e) =>{
-   const {id, value} = e.target;
-   setValues({...Values, [id] : value});
+  const change = (e) => {
+    const { id, value } = e.target;
+    setValues({ ...Values, [id]: value });
   }
- 
-  const handleSubmit = async(e) =>{
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    try
-    {
-       if(Values.username === "" || Values.email === "" || Values.address === "" || Values.password === "" ){
-        
+
+    try {
+      if (Values.username === "" || Values.email === "" || Values.address === "" || Values.password === "") {
+
         alert("All fields are required");
-       }
-       else{
-        const resp = await axios.post('https://thereadingroom.onrender.com/api/sign/signup', Values);
+      }
+      else {
+        const resp = await axios.post(process.env.BASE_URL + '/api/sign/signup', Values);
         console.log(resp.data);
         navigate('/login')
-        
-       }
-       
+
+      }
+
     }
-    catch(error){
+    catch (error) {
       alert(error.response.data.message);
     }
   }
@@ -48,7 +47,7 @@ function Signup() {
               value={Values.username}
               onChange={change}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              
+
             />
           </div>
           <div>
@@ -61,7 +60,7 @@ function Signup() {
               value={Values.email}
               onChange={change}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              
+
             />
           </div>
           <div>
@@ -74,7 +73,7 @@ function Signup() {
               value={Values.password}
               onChange={change}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              
+
             />
           </div>
           <div>
@@ -87,13 +86,13 @@ function Signup() {
               value={Values.address}
               onChange={change}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-             
+
             />
           </div>
           <button
             type="submit"
-            
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" 
+
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             SignUp
           </button>
@@ -106,6 +105,6 @@ function Signup() {
       </div>
     </div>
   );
-  }
-  
-  export default Signup;
+}
+
+export default Signup;

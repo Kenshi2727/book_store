@@ -11,7 +11,7 @@ export default function Component({ data, favourite }) {
 
   const handleRemove = async () => {
     try {
-      const resp = await axios.put("https://thereadingroom.onrender.com/api/favourite/remove-book-from-favourite", {}, { headers });
+      const resp = await axios.put(process.env.BASE_URL + "/api/favourite/remove-book-from-favourite", {}, { headers });
       // Handle successful removal
     } catch (error) {
       console.error("Error removing book from favourites:", error);
@@ -32,7 +32,7 @@ export default function Component({ data, favourite }) {
         </div>
       </Link>
       {favourite && (
-        <button 
+        <button
           className="bg-yellow-50 px-4 py-2 mt-4 rounded border border-yellow-500 text-zinc-800 hover:bg-yellow-500 transition-colors w-full"
           onClick={handleRemove}
         >

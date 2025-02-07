@@ -1,10 +1,10 @@
 import axios from 'axios'
-import React, {useEffect,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import BookCard from '../Bookcard/BookCard'
 
 export const Favourites = () => {
 
-  const [FavouriteBook,setFavouriteBook] = useState();
+  const [FavouriteBook, setFavouriteBook] = useState();
 
   const headers = {
     id: localStorage.getItem('id'),
@@ -12,13 +12,13 @@ export const Favourites = () => {
   };
 
   useEffect(() => {
-    const fetch = async() => {
-      const resp = await axios.get("https://thereadingroom.onrender.com/api/favourite/get-favourite-books", {headers})
+    const fetch = async () => {
+      const resp = await axios.get(process.env.BASE_URL + "/api/favourite/get-favourite-books", { headers })
       setFavouriteBook(resp.data.data);
     }
     fetch();
   }, [FavouriteBook])
-  
+
   return (
     <>
       {FavouriteBook && FavouriteBook.length === 0 && (
